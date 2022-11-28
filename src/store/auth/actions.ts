@@ -1,15 +1,14 @@
-import { createThunk } from '../utils/asyncModel';
-import { returnTypedThis } from '../utils/common';
-import { api } from '../../api';
-import { localStorageService } from '../../core/services/localStorage';
-import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
-import type { TAuthStore } from './index';
-import type {
+import { createThunk } from 'src/store/utils/asyncModel';
+import {
   IGetAuthRefreshTokenBE,
   IGetAuthTokenBE,
-  // IGetAuthRefreshTokenParams,
   IGetAuthTokenParams,
-} from '../../api/auth/models/token';
+} from 'src/api/auth/models/token';
+import { returnTypedThis } from 'src/store/utils/common';
+import { TAuthStore } from 'src/store/auth/index';
+import { api } from 'src/api';
+import { localStorageService } from 'src/core/services';
+import { LOCAL_STORAGE_KEYS } from 'src/constants';
 
 export const authGetTokensAsync = createThunk<
   IGetAuthTokenParams,
@@ -21,7 +20,7 @@ export const authGetTokensAsync = createThunk<
     that.tokens.setTokens(resp);
     localStorageService.set(
       LOCAL_STORAGE_KEYS.appVersion,
-      process.env.APP_VERSION as string
+      process.env.REACT_APP_VERSION as string
     );
     localStorageService.set(LOCAL_STORAGE_KEYS.tokens.access, resp.accessToken);
     localStorageService.set(

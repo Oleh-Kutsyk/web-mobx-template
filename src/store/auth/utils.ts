@@ -1,6 +1,6 @@
-import { localStorageService } from '../../core/services/localStorage';
-import { LOCAL_STORAGE_KEYS } from '../../constants/localStorageKeys';
-import type { TRootStoreInstance } from '../../stores/configureStore/configureStore';
+import { localStorageService } from 'src/core/services';
+import { LOCAL_STORAGE_KEYS } from 'src/constants';
+import { TRootStoreInstance } from 'src/store/configureStore/configureStore';
 
 const expiresInEmpty = 0;
 
@@ -35,4 +35,9 @@ export const getAuthTokensFromLocalStorage =
 export const setupAuthTokensToStore = (store: TRootStoreInstance): void => {
   const tokens = getAuthTokensFromLocalStorage();
   store.auth.tokens.setTokens(tokens);
+  tokens.accessToken &&
+    store.auth.runInAction(() => {
+      store.auth.isAuth = true;
+      store.auth.isAuthChecked = true;
+    });
 };

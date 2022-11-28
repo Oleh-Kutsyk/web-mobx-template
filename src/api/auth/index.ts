@@ -1,13 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { requestService } from '../../core/services/api';
-import { apiConfig } from '../../core/services/api/config';
-import { authRoutes } from './routes';
-import {
-  IExampleModeBE,
-  IExampleModeFE,
-  getExampleModelToFE,
-} from './models/userModelExample';
-import { TAsyncActionOptions } from '../../stores/utils/asyncModel';
 import type {
   IGetAuthRefreshTokenBE,
   IGetAuthRefreshTokenParams,
@@ -15,6 +5,9 @@ import type {
   IGetAuthTokenParams,
   IGlobalSignOutBEParams,
 } from './models/token';
+import { TAsyncActionOptions } from 'src/store/utils/asyncModel';
+import { requestService } from 'src/core/services';
+import { authRoutes } from './routes';
 
 export class Auth {
   routes = authRoutes;
@@ -27,7 +20,6 @@ export class Auth {
       this.routes.token,
       body,
       {
-        baseURL: apiConfig.getApiUrls().auth,
         ...options.cancelToken,
       }
     );
@@ -41,9 +33,8 @@ export class Auth {
   ): Promise<IGetAuthRefreshTokenBE> {
     const resp = await requestService.post<IGetAuthRefreshTokenBE>(
       this.routes.refreshToken(body.refreshToken),
-      {},
+      null,
       {
-        baseURL: apiConfig.getApiUrls().auth,
         ...options.cancelToken,
       }
     );
@@ -59,7 +50,6 @@ export class Auth {
       this.routes.globalSignOut,
       body,
       {
-        baseURL: apiConfig.getApiUrls().auth,
         ...options.cancelToken,
       }
     );
@@ -73,18 +63,5 @@ export class Auth {
     });
 
     return resp.data;
-  }
-
-  // For example of wright api call
-  async getUser(
-    userId: string,
-    options: TAsyncActionOptions
-  ): Promise<IExampleModeFE> {
-    const data = await requestService.get<IExampleModeBE>(
-      this.routes.user(userId),
-      { ...options.cancelToken }
-    );
-
-    return getExampleModelToFE(data.data);
   }
 }

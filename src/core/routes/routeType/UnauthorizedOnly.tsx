@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useMst } from '../../../stores';
 import { ROUTES } from '../routesPath';
 import { Location, useLocation, useNavigate } from 'react-router-dom';
+import { useMst } from 'src/store';
 
 interface IUnauthorizedOnlyContainer {
   element: React.ReactNode;
@@ -14,7 +14,6 @@ export const UnauthorizedOnlyContainer: React.FC<IUnauthorizedOnlyContainer> =
     const navigate = useNavigate();
     const { pathname }: Location = useLocation();
 
-    console.log('element', element);
     // Keep this for add check did the userIdentities is confirmed in system
     // if no (but it already register) - go home for example
     // if yes (he can't see login page)

@@ -1,8 +1,11 @@
+const baseUrl = '/auth' as const;
+
+// TODO: change authRoutes, it's an example
 export const authRoutes = {
-  baseUrl: '/auth' as const,
-  token: '/token' as const,
+  baseUrl,
+  token: `${baseUrl}/token`,
   refreshToken: (refreshToken?: string) =>
-    `/refresh-token?refreshToken=${refreshToken}` as const,
-  globalSignOut: '/global-sign-out' as const,
-  user: (userId: string) => `${authRoutes.baseUrl}/user/${userId}` as const,
+    `${baseUrl}/refresh-token?refreshToken=${refreshToken}`,
+  globalSignOut: `${baseUrl}/global-sign-out`,
+  user: (userId: string) => `${baseUrl}/${authRoutes.baseUrl}/user/${userId}`,
 } as const;

@@ -1,9 +1,9 @@
 export interface IGetAuthTokenBE {
-  accessToken: string; // nullable ===  ''
-  expiresIn: number; // integer($int32)
-  idToken: string; // nullable ===  ''
-  refreshToken: string; // nullable ===  ''
-  tokenType: string; // nullable ===  ''
+  accessToken: string;
+  expiresIn: number;
+  idToken: string;
+  refreshToken: string;
+  tokenType: string;
 }
 
 export interface IGetAuthTokenParams {

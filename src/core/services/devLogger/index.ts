@@ -16,7 +16,7 @@ type TLogOnDevelopmentMode = {
 };
 
 const logOnDevelopmentMode = (args: TLogOnDevelopmentMode) => {
-  if (ENV_IS_PRODUCTION) {
+  if (process.env.NODE_ENV !== 'development') {
     return;
   }
 
@@ -29,7 +29,6 @@ const logOnDevelopmentMode = (args: TLogOnDevelopmentMode) => {
   }
 };
 
-export type TDevLoggerService = InstanceType<typeof DevLoggerService>;
 export class DevLoggerService {
   public assert(expression: TExpression, ...args: TArgs): void {
     logOnDevelopmentMode({
@@ -56,13 +55,6 @@ export class DevLoggerService {
   public error(...args: TArgs): void {
     logOnDevelopmentMode({
       type: 'error',
-      args,
-    });
-  }
-
-  public group(...args: TArgs): void {
-    logOnDevelopmentMode({
-      type: 'group',
       args,
     });
   }

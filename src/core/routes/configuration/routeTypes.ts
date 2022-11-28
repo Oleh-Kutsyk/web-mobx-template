@@ -1,4 +1,4 @@
-import { RouteObject } from 'react-router/lib/router';
+import { RouteObject } from 'react-router-dom';
 
 export enum ERouteType {
   Public = 'Public',

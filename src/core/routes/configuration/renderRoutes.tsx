@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { ERouteType, ICustomRouteObject } from './routeTypes';
-import { WithErrorBoundary } from '../../../scenes/pages/common/ErrorBoundary';
 import {
   AuthorizedContainer as AuthorizedRoute,
   UnauthorizedOnlyContainer as UnauthorizedRoute,
   PublicRoute,
 } from '../routeType';
+import { ERouteType, ICustomRouteObject } from './routeTypes';
+
+import { WithErrorBoundary } from 'src/scenes/pages/common/ErrorBoundary';
 
 interface IRenderComponentByRouteType {
   route: ICustomRouteObject;
@@ -33,6 +34,8 @@ interface IProps {
 const getRouteMap = (props: IProps) => {
   return props.routes.map(route => {
     return (
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       <Route
         index={route.index}
         path={route.path}
@@ -48,6 +51,8 @@ const getRouteMap = (props: IProps) => {
 const getChildrenRouteMap = (children: ICustomRouteObject['children']) => {
   if (children?.length) {
     return children?.map(childRoute => (
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       <Route
         index={childRoute.index}
         path={childRoute.path}
@@ -62,7 +67,7 @@ const getChildrenRouteMap = (children: ICustomRouteObject['children']) => {
   return null;
 };
 
-export const RenderRoutesWithSuspense: React.FC<IProps> = props => {
+export const RenderRoutes: React.FC<IProps> = props => {
   const routes = useMemo(() => getRouteMap(props), [props]);
 
   return (

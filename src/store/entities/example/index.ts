@@ -1,12 +1,8 @@
 import { Instance, SnapshotIn, SnapshotOut, types } from 'mobx-state-tree';
 import {
-  deleteCategoryAsync,
   getCategoriesAsync,
-  createCategoryAsync,
-  updateCategoryAsync,
-  createSubcategoryAsync,
-  updateSubcategoryAsync,
-  deleteSubcategoryAsync,
+  // createCategoryAsync,
+  // updateCategoryAsync,
 } from './actions';
 import { runInAction } from 'src/store/utils/common';
 import { createCollectionModel } from 'src/store/utils/collectionModel';
@@ -16,7 +12,6 @@ const Subcategory = types
     id: types.identifierNumber,
     name: types.string,
     isEditing: false,
-    updateSubcategoryAsync,
   })
   .actions(store => ({
     runInAction,
@@ -25,7 +20,7 @@ const Subcategory = types
     },
   }));
 
-export const Example = types
+export const Category = types
   .model({
     id: types.identifierNumber,
     name: types.string,
@@ -33,12 +28,7 @@ export const Example = types
     isEditing: false,
     isAddingSubcategory: false,
     subcategories: types.array(Subcategory),
-    updateCategoryAsync,
-    createSubcategoryAsync,
-    deleteSubcategoryAsync,
-    uploadFileAsync,
-    updateCategoryIconAsync,
-    deleteCategoryIconAsync,
+    // updateCategoryAsync,
   })
   .views(store => ({
     getSortedSubcategories() {
@@ -58,19 +48,18 @@ export const Example = types
     },
   }));
 
-export const categories = createCollectionModel(Example, {
+export const categories = createCollectionModel(Category, {
   getCategoriesAsync,
-  createCategoryAsync,
-  deleteCategoryAsync,
+  // createCategoryAsync,
 });
 
-export type TInstrumentCategoryStore = Instance<typeof Example>;
+export type TInstrumentCategoryStore = Instance<typeof Category>;
 export type TInstrumentSubcategoryStore = Instance<typeof Subcategory>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IInstrumentCategoriesStoreIn
-  extends SnapshotIn<typeof Example> {}
+  extends SnapshotIn<typeof Category> {}
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IInstrumentCategoriesStoreOut
-  extends SnapshotOut<typeof Example> {}
+  extends SnapshotOut<typeof Category> {}

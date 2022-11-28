@@ -6,7 +6,7 @@ import {
   castToSnapshot,
 } from 'mobx-state-tree';
 
-import { Category } from '../../entities/categories/category';
+import { Category } from 'src/store/entities/example';
 
 export const categoriesModel = types
   .model('Categories', {

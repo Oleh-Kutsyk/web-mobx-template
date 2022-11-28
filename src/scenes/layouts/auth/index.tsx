@@ -1,11 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { Styled } from './styled';
+
+// import * as Styled from './styled';
 
 export const AuthPageLayout: React.FC = () => {
   return (
-    <Styled.Wrapper>
+    <div>
       <Outlet />
-    </Styled.Wrapper>
+    </div>
   );
 };

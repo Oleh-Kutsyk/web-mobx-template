@@ -1,7 +1,8 @@
-import { localStorageService } from '../../../core/services/localStorage';
 import { applySnapshot, onSnapshot } from 'mobx-state-tree';
-import { TRootStoreInstance } from '../../configureStore/configureStore';
-import { LOCAL_STORAGE_KEYS } from '../../../constants/localStorageKeys';
+
+import { TRootStoreInstance } from 'src/store/configureStore/configureStore';
+import { localStorageService } from 'src/core/services';
+import { LOCAL_STORAGE_KEYS } from 'src/constants';
 
 type TCreatePersist = (
   store: TRootStoreInstance,
@@ -27,7 +28,6 @@ export const createPersist: TCreatePersist = (store, key) => {
       entities: {},
       pages: {},
       ui: {},
-      notifications: {},
     });
   };
 
@@ -39,7 +39,7 @@ export const createPersist: TCreatePersist = (store, key) => {
         LOCAL_STORAGE_KEYS.persist
       );
 
-      let persistStore = {};
+      let persistStore;
 
       if (localStorageSnapshot) {
         const storeValue = JSON.parse(localStorageSnapshot);

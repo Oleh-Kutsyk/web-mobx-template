@@ -1,15 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { PageTitle } from '../../../../components/pageTitle';
-import { Brands } from './components/brands';
-import { AppVersion } from '../../../../components/AppVersion';
+import { useMst } from 'src/store';
 
 export const DashboardPage: React.FC = observer(() => {
+  const store = useMst();
+  const logout = () => {
+    store.auth.logoutAsync.run();
+  };
   return (
     <React.Fragment>
-      <PageTitle>Dashboard</PageTitle>
-      <Brands />
-      <AppVersion />
+      <h1>Dashboard</h1>
+      <button type='button' onClick={logout}>
+        logout
+      </button>
     </React.Fragment>
   );
 });

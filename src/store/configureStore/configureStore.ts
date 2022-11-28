@@ -1,13 +1,13 @@
 import React from 'react';
 import { types, Instance } from 'mobx-state-tree';
 import makeInspectable from 'mobx-devtools-mst';
-import { auth } from '../auth';
-import { entities } from '../entities';
-import { pages } from '../pages';
-import { ui } from '../ui';
-import { notifications } from '../notifications';
-import { persist } from '../utils/persist';
-import { app } from '../app';
+
+import { persist } from 'src/store/utils/persist';
+
+import { auth } from 'src/store/auth';
+import { entities } from 'src/store/entities';
+import { pages } from 'src/store/pages';
+import { ui } from 'src/store/ui';
 
 // Sets global behavior settings on the active MobX instance. Use this to change how MobX behaves as a whole.
 // https://www.mobxjs.com/refguide/api.html#configure
@@ -25,13 +25,12 @@ import { app } from '../app';
 // Mobx State Tree course
 // https://mobx-state-tree.js.org/concepts/trees#creating-models
 
-const RootStore = types.model({
-  app,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const RootStore: any = types.model({
   auth,
   entities,
   pages: types.optional(pages, {}),
   ui,
-  notifications: types.optional(notifications, {}),
 });
 
 const initialState = RootStore.create();

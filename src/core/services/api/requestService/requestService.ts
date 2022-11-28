@@ -1,9 +1,9 @@
+import { IRequestService } from 'src/core/services/api/requestService/type';
 import {
   httpClient,
-  THttpClientResponse,
   THttpClientRequestConfig,
-} from '../httpClient';
-import { IRequestService } from './type';
+  THttpClientResponse,
+} from 'src/core/services/api/httpClient';
 
 export type TRequestService = InstanceType<typeof RequestService>;
 

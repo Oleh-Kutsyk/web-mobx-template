@@ -1,5 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import type { IGetAuthRefreshTokenBE } from '../../../api/auth/models/token';
+
+interface IGetAuthRefreshTokenBE {
+  accessToken: string;
+  expiresIn: number;
+  idToken: string;
+  tokenType: string;
+}
 
 type TRefreshSubscribers = (token: string, tokenType: string) => void;
 
@@ -51,7 +57,9 @@ export const refreshTokenWithReSendLastRequest = (
 
     subscribeTokenRefresh((idToken: string, tokenType: string) => {
       // Replace the expired idToken and retry
-      originalRequest.headers.Authorization = `${tokenType} ${idToken}`;
+      originalRequest.headers = {
+        Authorization: `${tokenType} ${idToken}`,
+      };
       axios(originalRequest).then(
         response => resolve(response),
         error => reject(error)

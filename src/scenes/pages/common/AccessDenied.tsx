@@ -1,7 +1,5 @@
 import React from 'react';
 
-// interface IProps {};
-
 const wrapperStyle = {
   height: '100%',
   display: 'flex',

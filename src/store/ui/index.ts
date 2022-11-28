@@ -1,9 +1,7 @@
 import { types, Instance, SnapshotIn, SnapshotOut } from 'mobx-state-tree';
-import { sidebar } from './sidebar';
 import { modal } from './modals';
 
 export const uiModel = types.model('ui', {
-  sidebar,
   modal,
 });
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   types as t,
   getParent,
@@ -6,14 +7,13 @@ import {
   getRoot,
 } from 'mobx-state-tree';
 import { normalize, Schema } from 'normalizr';
+
 import {
   httpClientCancelTokenStatic,
-  THttpClientCancelToken,
   isHttpClientCancel,
-} from '../../../core/services/api/httpClient';
-import type { TRootStoreInstance } from '../../configureStore/configureStore';
-import { responseHandling, STATUS_CODE } from '../../../utils/responseHandling';
-import { INotificationIn } from '../../notifications';
+  THttpClientCancelToken,
+} from 'src/core/services/api/httpClient';
+import { TRootStoreInstance } from 'src/store/configureStore/configureStore';
 
 const asyncModel = t
   .model('async', {
@@ -24,24 +24,12 @@ const asyncModel = t
     throwable: false,
   })
   .views(store => ({
-    get errorMessage() {
-      if (store.error && store.error.message) {
-        return store.error && store.error.message;
-      }
-
-      return null;
-    },
-
     get isError() {
       return Boolean(store.error);
     },
 
     get canBeRun() {
       return !store.error && !store.inProgress;
-    },
-
-    get inProgressAgain() {
-      return store.inProgress && store.hasEverBeenRun;
     },
   }))
   .actions(store => ({
@@ -55,11 +43,7 @@ const asyncModel = t
       store.error = null;
     },
 
-    success(funcName: string) {
-      const root = getRoot<TRootStoreInstance>(store);
-      const addNotification = (notification: INotificationIn) =>
-        root.notifications.add(notification);
-
+    success() {
       if (!store.hasEverBeenRun) {
         store.hasEverBeenRun = true;
       }
@@ -69,14 +53,9 @@ const asyncModel = t
       } else {
         store.inProgress = false;
       }
-      responseHandling(addNotification, 'success', funcName, STATUS_CODE[200]);
     },
 
-    failed(err: Error, funcName, throwError = store.throwable) {
-      const root = getRoot<TRootStoreInstance>(store);
-      const addNotification = (notification: INotificationIn) =>
-        root.notifications.add(notification);
-
+    failed(err: Error, throwError = store.throwable) {
       if (!store.hasEverBeenRun) {
         store.hasEverBeenRun = true;
       }
@@ -90,19 +69,6 @@ const asyncModel = t
       // TODO: add Error type after BE implement errors
       // @ts-expect-error - use base error without BE Model
       const response = err?.response;
-
-      const errors = response?.data?.errors;
-      const errorMessage = errors?.length
-        ? response?.data?.errors[0].message
-        : '';
-
-      responseHandling(
-        addNotification,
-        'error',
-        funcName,
-        response?.status,
-        response ? errorMessage || (response?.data?.message ?? err.message) : ''
-      );
       if (response) {
         store.error = {
           message: response?.data?.message ?? err.message,
@@ -146,14 +112,6 @@ export type TThunk<TA, TR> = (
   args: TA
 ) => TAsyncAction<TR> | [TShouldSkipCheck, TAsyncAction<TR>];
 
-export type TMapStateCallback<TA, TS, TR> = (
-  args: TA,
-  store: TS
-) => TR | undefined;
-
-type TCreateThunkInternal = ReturnType<typeof createThunk>;
-export type TInstanceCreateThunk = Instance<TCreateThunkInternal>;
-
 export function createThunk<TA, TR, TRInPromise = Promise<TR>>(
   thunk: TThunk<TA, TRInPromise>,
   auto = true,
@@ -166,29 +124,25 @@ export function createThunk<TA, TR, TRInPromise = Promise<TR>>(
   //   : TRInPromise;
 
   const thunkModel = asyncModel.named('thunkModel').actions(store => {
-    let cancelTokenSource;
+    let cancelTokenSource: any;
     return {
       beforeDestroy() {
         cancelTokenSource &&
           cancelTokenSource.cancel('Canceled from thunkModel on beforeDestroy');
       },
 
-      async auto<TR2>(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        promise: any,
-        funcName: string
-      ): Promise<TR2 | undefined> {
+      async auto<TR2>(promise: any): Promise<TR2 | undefined> {
         try {
           store.start();
 
           const value = await promise();
 
-          store.success(funcName);
+          store.success();
 
           return value;
         } catch (err) {
           if (!isHttpClientCancel(err)) {
-            store.failed(err, funcName, throwError);
+            store.failed(err as Error, throwError);
           }
         }
 

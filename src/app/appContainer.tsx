@@ -1,11 +1,12 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+
 import {
-  RootStoreProvider,
   rootStore,
-} from '../stores/configureStore/configureStore';
-import { App } from './app';
+  RootStoreProvider,
+} from 'src/store/configureStore/configureStore';
 import { browserHistoryInstance } from '../core/history';
+import { App } from './app';
 
 export const AppContainer: React.FC = () => {
   return (

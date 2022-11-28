@@ -1,14 +1,14 @@
-import qs from 'qs'; // TODO: change to query-string
+import { devLoggerService } from 'src/core/services/devLogger';
 import {
   httpClient,
-  THttpClientRequestConfig,
   isHttpClientCancel,
-} from './httpClient';
-import { devLoggerService } from '../devLogger';
-import { browserHistoryInstance } from '../../history';
-import { ROUTES } from '../../routes/routesPath';
-import { refreshTokenWithReSendLastRequest } from './refreshToken';
-import type { IGetAuthRefreshTokenBE } from '../../../api/auth/models/token';
+  THttpClientRequestConfig,
+} from 'src/core/services/api/httpClient';
+import { refreshTokenWithReSendLastRequest } from 'src/core/services/api/refreshToken';
+import { IGetAuthRefreshTokenBE } from 'src/api/auth/models/token';
+
+import { browserHistoryInstance } from 'src/core/history';
+import { ROUTES } from 'src/core/routes/routesPath';
 
 const STATUS_CODE = {
   401: 401,
@@ -20,10 +20,7 @@ const STATUS_CODE = {
 const REQUEST_TIMEOUT = 8000; // 8s;
 
 interface IConfig {
-  defaults: Partial<THttpClientRequestConfig>;
   getAccessToken: () => string | undefined;
-  getBrand: () => string | undefined;
-  getProduct: () => string | undefined;
   refreshToken: () => Promise<IGetAuthRefreshTokenBE | undefined>;
   getTokenType: () => string | undefined;
   logout: () => void;
@@ -32,16 +29,12 @@ interface IConfig {
 export class HttpClientConfig {
   private _getAccessToken: IConfig['getAccessToken'];
   private _refreshToken: IConfig['refreshToken'];
-  private _getBrand: IConfig['getBrand'];
-  private _getProduct: IConfig['getProduct'];
   private _logout: IConfig['logout'];
   private _getTokenType: IConfig['getTokenType'];
 
   initialize(config: IConfig): void {
-    this._setDefaults(config.defaults);
+    this._setDefaults();
     this._refreshToken = config.refreshToken;
-    this._getBrand = config.getBrand;
-    this._getProduct = config.getProduct;
     this._getAccessToken = config.getAccessToken;
     this._logout = config.logout;
     this._getTokenType = config.getTokenType;
@@ -56,31 +49,24 @@ export class HttpClientConfig {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private _setDefaults(defaults: Partial<THttpClientRequestConfig> = {}) {
-    httpClient.defaults.timeout = REQUEST_TIMEOUT;
-    httpClient.defaults.baseURL = defaults.baseURL;
-    httpClient.defaults.headers = {
-      ...defaults.headers,
-      'Content-Type': 'application/json',
+  private _setDefaults() {
+    httpClient.defaults = {
+      timeout: REQUEST_TIMEOUT,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      headers: {
+        'Content-Type': 'application/json',
+      },
     };
-    httpClient.defaults.paramsSerializer = params => {
-      return qs.stringify(params, { arrayFormat: 'repeat', encode: false });
-    };
-    // Keep next line for check case with cache
-    // httpClient.defaults.headers.common['cache-control'] = 'no-cache';
   }
 
   private _setRequestInterceptors() {
     httpClient.interceptors.request.use(
       (config: THttpClientRequestConfig): THttpClientRequestConfig => {
-        if (this._getBrand()) {
-          config.headers.Brand = this._getBrand();
-        }
-        if (this._getProduct()) {
-          config.headers.Product = this._getProduct();
-        }
         if (this._authHeader) {
-          config.headers.Authorization = this._authHeader;
+          config.headers = {
+            Authorization: this._authHeader,
+          };
         }
 
         return config;
@@ -138,17 +124,6 @@ export class HttpClientConfig {
           );
         }
 
-        // if (response.status === STATUS_CODE[422]) {
-        //   if (
-        //     response.data.errors &&
-        //     response.data.errors[0] &&
-        //     response.data.errors[0].message === 'token_not_found'
-        //   ) {
-        //     // this._logout();
-        //     return;
-        //   }
-        // }
-
         if (response.status >= STATUS_CODE[500]) {
           console.log('STATUS_CODE[500]', STATUS_CODE[500]);
         }
@@ -158,11 +133,8 @@ export class HttpClientConfig {
     );
   }
 
-  private _processForbidden = (_msg = '', showMessage = true) => {
+  private _processForbidden = (_msg = '') => {
     browserHistoryInstance.push(ROUTES.common.accessDenied);
-    if (showMessage) {
-      // showNotification(msg);
-    }
   };
 }
 

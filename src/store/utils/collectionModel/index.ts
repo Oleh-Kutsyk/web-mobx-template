@@ -79,7 +79,7 @@ export const createCollectionModel = <
         ) {
           mergeStrategy(item, value);
         } else {
-          Object.assign(item, value);
+          Object.assign(item as any, value);
         }
       },
       find(callback: (item: T) => T | undefined) {

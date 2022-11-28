@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../routesPath';
-import { useMst } from '../../../stores';
-import { checkAppVersion } from '../../../utils';
+import { useMst } from 'src/store';
+import { checkAppVersion } from 'src/utils';
 
 interface IAuthorizedContainer {
   element: React.ReactNode;

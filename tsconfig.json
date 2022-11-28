@@ -1,14 +1,22 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNext",
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "ES6",
+      "ES7",
+      "ES2017",
+      "ES2018",
+      "ES2019",
+      "ES2020",
+      "ESNext",
+      "DOM",
+      "WebWorker"
     ],
+    "jsx": "react",
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "strictPropertyInitialization": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,10 +25,28 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
+    "useDefineForClassFields": true,
+    "downlevelIteration": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "noUnusedLocals": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "baseUrl": ".",
+    "paths": {
+      "src/*": [
+        "src/*"
+      ]
+    }
   },
   "include": [
-    "src"
+    "src",
+    "typings/objects.d.ts",
+    "typings/system.d.ts",
+    "typings/routes.d.ts"
   ]
 }

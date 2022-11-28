@@ -1,11 +1,8 @@
 import React from 'react';
 
-import { useNavigation } from '../../../../hooks';
+import { useNavigation } from 'src/hooks';
 
-import { PageTitle } from '../../../../components/pageTitle';
-import { Button } from '../../../../components/button';
-
-import * as Styled from './styled';
+// import * as Styled from './styled';
 
 interface IErrorBoundaryPageProps {
   children: React.ReactNode;
@@ -41,12 +38,12 @@ export class ErrorBoundary extends React.Component<
     }
 
     return (
-      <Styled.Root>
-        <PageTitle>Oops, something went wrong</PageTitle>
-        <Button color='inherit' onClick={this.props.goBackNavigate}>
+      <div>
+        <h1>Oops, something went wrong</h1>
+        <button type='button' onClick={this.props.goBackNavigate}>
           Go Back
-        </Button>
-      </Styled.Root>
+        </button>
+      </div>
     );
   }
 }

@@ -22,7 +22,9 @@ export type THttpResponse<T> = Promise<THttpClientResponse<T>>;
 
 export type TBEResponse<T> = { result: T; message: string };
 
-export const httpClient: THttpClientInstance = Axios.create();
+export const httpClient: THttpClientInstance = Axios.create({
+  baseURL: process.env.REACT_APP_BE_ORIGIN_URL,
+});
 
 export const isHttpClientCancel = Axios.isCancel;
 export const isHttpClientError = Axios.isAxiosError;

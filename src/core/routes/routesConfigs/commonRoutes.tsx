@@ -2,19 +2,18 @@ import React from 'react';
 
 import { ERouteType, ICustomRouteObject } from '../configuration';
 import { ROUTES } from '../routesPath';
-
-import { AccessDenied } from '../../../scenes/pages/common/AccessDenied';
-import { NotFound } from '../../../scenes/pages/common/NotFound';
+import { NotFound } from 'src/scenes/pages/common/NotFound';
+import { AccessDenied } from 'src/scenes/pages/common/AccessDenied';
 
 export const commonRoutes: ICustomRouteObject[] = [
   {
-    id: `commonRoutes_1`,
+    id: `commonRoutes_NotFound`,
     path: ROUTES.common.notFound,
     routeType: ERouteType.Public,
     element: <NotFound />,
   },
   {
-    id: 'commonRoutes_2',
+    id: 'commonRoutes_AccessDenied',
     path: ROUTES.common.accessDenied,
     routeType: ERouteType.Public,
     element: <AccessDenied />,

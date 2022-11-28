@@ -1,21 +1,18 @@
 import React from 'react';
 
-import { useNavigation } from '../../../../hooks';
+import { useNavigation } from 'src/hooks';
 
-import { PageTitle } from '../../../../components/pageTitle';
-import { Button } from '../../../../components/button';
-
-import * as Styled from './styled';
+// import * as Styled from './styled';
 
 export const NotFound: React.FC = () => {
   const { goBackNavigate } = useNavigation();
 
   return (
-    <Styled.Root>
-      <PageTitle>Page Not Found</PageTitle>
-      <Button color='inherit' onClick={goBackNavigate}>
+    <div>
+      <h1>Page Not Found</h1>
+      <button type='button' onClick={goBackNavigate}>
         Go Back
-      </Button>
-    </Styled.Root>
+      </button>
+    </div>
   );
 };
