@@ -38,8 +38,6 @@ Each root directory can contain own README.md or CONTRIBUTING.md file
 
 ./.husky               // Husky hooks configs and scripts
 ./ci-scripts           // CI scripts
-./build-config         // Build and Development configs
-./.storybook           // Storybook configs
 
 ./public               // Static files
 
@@ -53,22 +51,17 @@ Each root directory can contain own README.md or CONTRIBUTING.md file
 |-- app                // Root component with global app data
 |-- assets             // Images, styles, fonts, etc.
   |-- icons            // General application icons
-|-- atoms              // The smallest possible components(ex: Button, Icon, Input, Title)
 |-- components         // Common reusable components(can render other components, atoms or only have connect to store)
   |-- $entity
     |-- index.tsx
     |-- styled.tsx
-    |-- $entity.stories.tsx
-    |-- $entity.test.tsx
 |-- constants          // Global application constants
-|-- core               // DI container, Core Application services, such as logger, localStorage, sessionStorage, etc.
+|-- core               //Core Application services, routes, such as logger, localStorage, sessionStorage, etc.
 |-- hooks              // Reusable Hooks
 |-- providers          // Context Providers components
 |-- scenes             // Application components related to scene
-  |-- routes             // Routes and configs
   |-- layouts            // Page global layouts
   |-- pages              // Pages (should be located inside layouts)
-|-- serviceWorkers     // Service-workers directory with all dependencies
 |-- store              // MobX stores entities with utils(Service, Models)
   |-- $entity
     |-- actions          // Folder or File with All thunks
@@ -77,7 +70,6 @@ Each root directory can contain own README.md or CONTRIBUTING.md file
     |-- modelActions     // Should export `$entityActions` (if present - should import and use views)
     |-- modelType.ts     // Should export type T`$entityModel` = Instance<typeof $entityModel>; (to prevent cycle dependency - will be use in actions)
     |-- index.ts         // Should re-export `$entityActions` as `$entity` (if you have only model file - re-export `$entityModel` as `$entity`)
-|-- tests              // Tests configs
 |-- themes             // Material-UI themes configs
 |-- utils              // Common Reusable utils
 |-- index.tsx          // Application entry point
@@ -93,10 +85,10 @@ Current project is following to next Git workflow:
 
 ### Branches permissions
 
-| Name    | Write access    | Merge via PR    |
-| :------ | :-------------- | :-------------- |
-| master  | nobody          | @Dmitriy Muliak |
-| develop | @Dmitriy Muliak | Everybody       |
+| Name    | Write access | Merge via PR |
+| :------ |:-------------|:-------------|
+| master  | nobody       | @Oleh Kutsyk |
+| develop | @Oleh Kutsyk | Everybody    |
 
 ### Branches description
 
